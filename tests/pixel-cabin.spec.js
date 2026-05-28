@@ -14,7 +14,10 @@ test.describe('pixel rainy cabin', () => {
     await expect(page.getByRole('button', { name: '查看糖醋排骨' })).toBeVisible();
     await expect(page.getByRole('button', { name: '查看小猫' })).toBeVisible();
     await expect(page.getByRole('button', { name: '查看小狗' })).toBeVisible();
-    await expect(page.getByText('糖醋排骨')).toBeVisible();
+    await expect(page.getByLabel('桌上的食物')).toHaveCount(0);
+    await expect(page.locator('.food-table')).toBeVisible();
+    await expect(page.locator('.table-top')).toBeVisible();
+    await expect(page.locator('.plate-ribs')).toBeVisible();
     await expect(page.getByText('小鱼干', { exact: true })).toBeVisible();
     await expect(page.getByText('骨头饼干', { exact: true })).toBeVisible();
   });
