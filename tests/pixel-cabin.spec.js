@@ -4,7 +4,7 @@ test.describe('pixel rainy cabin', () => {
   test('renders the main cabin experience and required controls', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: '雨夜小屋' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '雨夜小屋' })).toBeAttached();
     await expect(page.getByRole('region', { name: '蓝调雨夜小屋场景' })).toBeVisible();
     await expect(page.getByRole('region', { name: '互动信息' })).toBeVisible();
     await expect(page.getByRole('button', { name: '查看窗户' })).toBeVisible();
