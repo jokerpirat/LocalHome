@@ -1,0 +1,899 @@
+:root {
+  --night-900: #081630;
+  --night-800: #0c2348;
+  --night-700: #12355f;
+  --rain-500: #4da3c7;
+  --rain-300: #8bd3ea;
+  --wood-700: #35425e;
+  --wood-500: #51617c;
+  --warm-500: #ffc76f;
+  --warm-300: #ffe3a1;
+  --food-500: #c8493a;
+  --food-300: #ff9f67;
+  --ink: #e8f5ff;
+  --muted: #9db8cb;
+  --panel-border: #3b6f8f;
+  --cat-x: 19%;
+  --cat-y: 74%;
+  --dog-x: 68%;
+  --dog-y: 75%;
+  font-family: "Courier New", Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--night-900);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background: linear-gradient(180deg, #081630 0%, #0c2348 48%, #09182f 100%);
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1180px, calc(100vw - 32px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: start;
+}
+
+.scene-card,
+.info-panel {
+  border: 4px solid var(--panel-border);
+  background: rgba(10, 28, 55, 0.92);
+  box-shadow: 0 0 0 4px #071226, 0 18px 0 rgba(3, 8, 18, 0.45);
+}
+
+.scene-card {
+  padding: 16px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  letter-spacing: 0;
+}
+
+.subtitle,
+.panel-copy,
+.food-note,
+.pet-status p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.weather-chip {
+  min-width: 72px;
+  padding: 8px 10px;
+  border: 3px solid var(--rain-300);
+  color: var(--rain-300);
+  text-align: center;
+  background: #071226;
+}
+
+.scene {
+  position: relative;
+  overflow: hidden;
+  min-height: 560px;
+  border: 4px solid #071226;
+  background-color: rgb(8, 22, 48);
+  image-rendering: pixelated;
+  isolation: isolate;
+}
+
+.sky,
+.rain-layer,
+.cabin,
+.path,
+.food-table,
+.pet,
+.pet-food,
+.hotspot {
+  position: absolute;
+}
+
+.sky {
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(20, 53, 95, 0.8), transparent 62%),
+    linear-gradient(90deg, rgba(77, 163, 199, 0.12), transparent 55%);
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #c7efff;
+  box-shadow: 0 0 0 2px rgba(199, 239, 255, 0.15);
+}
+
+.star-one {
+  top: 12%;
+  left: 14%;
+}
+
+.star-two {
+  top: 20%;
+  right: 18%;
+}
+
+.cloud {
+  position: absolute;
+  width: 130px;
+  height: 26px;
+  background: #132c52;
+  box-shadow: 24px 12px 0 #102747, 72px 4px 0 #18375f;
+  opacity: 0.82;
+}
+
+.cloud-one {
+  top: 16%;
+  left: 8%;
+}
+
+.cloud-two {
+  top: 9%;
+  right: 12%;
+}
+
+.rain-layer {
+  inset: -20% 0 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.rain-back {
+  background-image: linear-gradient(115deg, transparent 0 42%, rgba(139, 211, 234, 0.25) 43% 48%, transparent 49% 100%);
+  background-size: 42px 42px;
+  animation: rainBack 900ms steps(8) infinite;
+}
+
+.rain-front {
+  background-image: linear-gradient(115deg, transparent 0 40%, rgba(199, 239, 255, 0.55) 41% 48%, transparent 49% 100%);
+  background-size: 66px 66px;
+  animation: rainFront 620ms steps(6) infinite;
+}
+
+.cabin {
+  left: 24%;
+  bottom: 18%;
+  width: 52%;
+  height: 45%;
+  z-index: 5;
+}
+
+.roof {
+  position: absolute;
+  left: -8%;
+  top: 0;
+  width: 116%;
+  height: 28%;
+  background: #203653;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  border-bottom: 8px solid #5f88a4;
+}
+
+.drip {
+  position: absolute;
+  bottom: -18px;
+  width: 5px;
+  height: 14px;
+  background: var(--rain-300);
+  opacity: 0.85;
+  animation: roofDrip 1200ms steps(5) infinite;
+}
+
+.drip-one {
+  left: 18%;
+}
+
+.drip-two {
+  left: 51%;
+  animation-delay: 280ms;
+}
+
+.drip-three {
+  right: 14%;
+  animation-delay: 520ms;
+}
+
+.house-body {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0;
+  height: 76%;
+  background: var(--wood-700);
+  border: 5px solid #18243a;
+  box-shadow: inset 0 0 0 6px var(--wood-500), inset 0 -18px 0 rgba(7, 18, 38, 0.25);
+}
+
+.window {
+  position: absolute;
+  top: 22%;
+  width: 25%;
+  height: 28%;
+  border: 4px solid #1b2538;
+  background: var(--warm-300);
+  box-shadow: 0 0 18px var(--warm-500);
+  animation: warmFlicker 2200ms steps(4) infinite;
+}
+
+.window-left {
+  left: 10%;
+}
+
+.window-right {
+  right: 10%;
+}
+
+.curtain,
+.table-silhouette,
+.lamp-glow,
+.rib-plate-mini {
+  position: absolute;
+}
+
+.curtain {
+  inset: 0 55% 0 0;
+  background: rgba(255, 145, 110, 0.45);
+}
+
+.lamp-glow {
+  left: 48%;
+  bottom: 18%;
+  width: 16px;
+  height: 24px;
+  background: #fff1b8;
+}
+
+.table-silhouette {
+  left: 12%;
+  right: 12%;
+  bottom: 14%;
+  height: 10px;
+  background: #5b3b36;
+}
+
+.rib-plate-mini {
+  right: 18%;
+  bottom: 28%;
+  width: 28px;
+  height: 12px;
+  background: var(--food-500);
+  box-shadow: 8px -3px 0 var(--food-300);
+}
+
+.door {
+  position: absolute;
+  left: 39%;
+  bottom: 0;
+  width: 22%;
+  height: 43%;
+  background: #18233a;
+  border: 4px solid #111a2b;
+}
+
+.door-light {
+  position: absolute;
+  right: 10px;
+  top: 45%;
+  width: 7px;
+  height: 7px;
+  background: var(--warm-500);
+}
+
+.porch-light {
+  position: absolute;
+  left: 48%;
+  top: 8%;
+  width: 14px;
+  height: 18px;
+  background: var(--warm-500);
+  box-shadow: 0 0 22px var(--warm-500);
+  animation: warmFlicker 2200ms steps(4) infinite;
+}
+
+.path {
+  left: 32%;
+  bottom: 0;
+  width: 36%;
+  height: 27%;
+  background: linear-gradient(180deg, rgba(64, 89, 122, 0.8), rgba(24, 44, 72, 0.9));
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  z-index: 3;
+}
+
+.puddle {
+  position: absolute;
+  border: 3px solid rgba(139, 211, 234, 0.75);
+  background: rgba(77, 163, 199, 0.2);
+  animation: puddleRipple 1400ms steps(4) infinite;
+}
+
+.puddle-one {
+  left: 18%;
+  bottom: 24%;
+  width: 74px;
+  height: 20px;
+}
+
+.puddle-two {
+  right: 12%;
+  bottom: 8%;
+  width: 92px;
+  height: 24px;
+}
+
+.food-table {
+  right: 21%;
+  bottom: 28%;
+  width: 110px;
+  height: 48px;
+  z-index: 7;
+}
+
+.plate-ribs {
+  position: absolute;
+  left: 12px;
+  top: 15px;
+  width: 62px;
+  height: 22px;
+  background: #f4d8b0;
+  box-shadow: inset 0 -5px 0 #c9a177;
+}
+
+.plate-ribs::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 3px;
+  width: 38px;
+  height: 12px;
+  background: var(--food-500);
+  box-shadow: 12px -2px 0 var(--food-300), 22px 3px 0 #7d2e2b;
+}
+
+.soup-bowl {
+  position: absolute;
+  right: 8px;
+  top: 18px;
+  width: 28px;
+  height: 18px;
+  background: #dfefff;
+  box-shadow: inset 0 -7px 0 #e88954;
+}
+
+.steam {
+  position: absolute;
+  width: 5px;
+  height: 18px;
+  background: rgba(255, 227, 161, 0.65);
+  animation: steamRise 1600ms steps(5) infinite;
+}
+
+.steam-one {
+  left: 28px;
+  top: -2px;
+}
+
+.steam-two {
+  left: 50px;
+  top: 1px;
+  animation-delay: 420ms;
+}
+
+.pet {
+  width: 74px;
+  height: 48px;
+  z-index: 8;
+  left: var(--pet-x);
+  bottom: calc(100% - var(--pet-y));
+  transition: left 420ms steps(6), bottom 420ms steps(6);
+}
+
+.pet-cat {
+  --pet-x: var(--cat-x);
+  --pet-y: var(--cat-y);
+}
+
+.pet-dog {
+  --pet-x: var(--dog-x);
+  --pet-y: var(--dog-y);
+}
+
+.cat-body,
+.cat-head,
+.cat-tail,
+.cat-eye,
+.dog-body,
+.dog-head,
+.dog-ear,
+.dog-tail {
+  position: absolute;
+}
+
+.cat-body {
+  left: 14px;
+  bottom: 4px;
+  width: 42px;
+  height: 24px;
+  background: #6d8aa7;
+  animation: catBreathe 2200ms steps(3) infinite;
+}
+
+.cat-head {
+  left: 36px;
+  bottom: 22px;
+  width: 28px;
+  height: 22px;
+  background: #7da0bd;
+  box-shadow: -4px -8px 0 #7da0bd, 12px -8px 0 #7da0bd;
+}
+
+.cat-tail {
+  left: 4px;
+  bottom: 18px;
+  width: 20px;
+  height: 8px;
+  background: #7da0bd;
+  transform-origin: right center;
+  animation: catTail 1300ms steps(4) infinite;
+}
+
+.cat-eye {
+  bottom: 32px;
+  width: 4px;
+  height: 4px;
+  background: #071226;
+  animation: catBlink 4200ms steps(2) infinite;
+}
+
+.cat-eye-left {
+  left: 45px;
+}
+
+.cat-eye-right {
+  left: 57px;
+}
+
+.dog-body {
+  left: 12px;
+  bottom: 3px;
+  width: 48px;
+  height: 27px;
+  background: #8b765b;
+}
+
+.dog-head {
+  left: 42px;
+  bottom: 23px;
+  width: 30px;
+  height: 24px;
+  background: #a68b68;
+  animation: dogHead 1900ms steps(3) infinite;
+}
+
+.dog-ear {
+  left: 48px;
+  bottom: 18px;
+  width: 10px;
+  height: 22px;
+  background: #5f4a3b;
+}
+
+.dog-tail {
+  left: 2px;
+  bottom: 24px;
+  width: 20px;
+  height: 8px;
+  background: #a68b68;
+  transform-origin: right center;
+  animation: dogTail 780ms steps(4) infinite;
+}
+
+.pet-food {
+  padding: 4px 6px;
+  border: 2px solid #253b5c;
+  color: #fff1b8;
+  background: #18233a;
+  font-size: 0.75rem;
+  z-index: 7;
+}
+
+.cat-food {
+  left: 19%;
+  bottom: 16%;
+}
+
+.dog-food {
+  right: 20%;
+  bottom: 16%;
+}
+
+.hotspot {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(139, 211, 234, 0.9);
+  background: rgba(255, 227, 161, 0.12);
+  box-shadow: 0 0 0 4px rgba(8, 22, 48, 0.5);
+  cursor: pointer;
+  z-index: 12;
+}
+
+.hotspot:focus-visible {
+  outline: 4px solid var(--warm-300);
+  outline-offset: 3px;
+}
+
+.hotspot-window {
+  left: 58%;
+  top: 43%;
+}
+
+.hotspot-door {
+  left: 47%;
+  top: 55%;
+}
+
+.hotspot-food {
+  right: 22%;
+  top: 56%;
+}
+
+.hotspot-cat {
+  left: 18%;
+  bottom: 18%;
+}
+
+.hotspot-dog {
+  right: 20%;
+  bottom: 18%;
+}
+
+.info-panel {
+  padding: 18px;
+  position: sticky;
+  top: 18px;
+}
+
+.panel-header {
+  margin-bottom: 12px;
+}
+
+.eyebrow {
+  color: var(--rain-300);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.panel-copy {
+  min-height: 92px;
+}
+
+.food-display,
+.pet-status,
+.action-row button {
+  border: 3px solid #294d70;
+  background: #0b1c34;
+}
+
+.food-display {
+  margin-top: 16px;
+  padding: 12px;
+}
+
+.food-name {
+  display: block;
+  color: var(--warm-300);
+  font-weight: 700;
+}
+
+.food-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+.pet-status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pet-status {
+  padding: 10px;
+}
+
+.pet-status h3 {
+  margin-bottom: 8px;
+  color: var(--warm-300);
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.action-row button {
+  min-height: 44px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.action-row button:focus-visible {
+  outline: 3px solid var(--warm-300);
+  outline-offset: 2px;
+}
+
+.pet[data-mood="eating"] {
+  animation: petEating 620ms steps(3) infinite;
+}
+
+.pet[data-mood="happy"] {
+  animation: petHappy 520ms steps(4) infinite;
+}
+
+.pet[data-mood="sleepy"] {
+  animation: petSleepy 1600ms steps(3) infinite;
+}
+
+.pet-cat[data-mood="sleepy"] .cat-head {
+  transform: translateY(8px);
+}
+
+.pet-dog[data-mood="sleepy"] .dog-head {
+  transform: translateY(9px);
+}
+
+@keyframes rainBack {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -42px 84px;
+  }
+}
+
+@keyframes rainFront {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -66px 132px;
+  }
+}
+
+@keyframes roofDrip {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(34px);
+    opacity: 0;
+  }
+}
+
+@keyframes puddleRipple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(139, 211, 234, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(139, 211, 234, 0);
+  }
+}
+
+@keyframes warmFlicker {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.12);
+  }
+}
+
+@keyframes steamRise {
+  0% {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-18px);
+    opacity: 0;
+  }
+}
+
+@keyframes catTail {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-18deg);
+  }
+}
+
+@keyframes catBlink {
+  0%,
+  94%,
+  100% {
+    height: 4px;
+  }
+  96% {
+    height: 1px;
+  }
+}
+
+@keyframes catBreathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes dogTail {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes dogHead {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes petEating {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 4px;
+  }
+}
+
+@keyframes petHappy {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -5px;
+  }
+}
+
+@keyframes petSleepy {
+  0%,
+  100% {
+    translate: 0 3px;
+  }
+  50% {
+    translate: 0 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    width: min(100vw - 20px, 680px);
+    grid-template-columns: 1fr;
+    padding: 10px 0 18px;
+  }
+
+  .scene-card {
+    padding: 10px;
+  }
+
+  .title-row {
+    align-items: flex-start;
+  }
+
+  .scene {
+    min-height: 420px;
+  }
+
+  .cabin {
+    left: 13%;
+    width: 74%;
+    bottom: 22%;
+  }
+
+  .food-table {
+    right: 12%;
+    bottom: 31%;
+  }
+
+  .info-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  .app-shell {
+    width: calc(100vw - 12px);
+  }
+
+  .title-row {
+    display: grid;
+  }
+
+  .weather-chip {
+    justify-self: start;
+  }
+
+  .scene {
+    min-height: 360px;
+  }
+
+  .pet-status-grid,
+  .action-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hotspot {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}

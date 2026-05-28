@@ -1,0 +1,15 @@
+{
+  "name": "pixel-rainy-cabin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Responsive pixel-art rainy cabin page with animated pets and food interactions.",
+  "scripts": {
+    "serve": "npx http-server . -p 4173 -c-1",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "http-server": "^14.1.1"
+  }
+}
