@@ -5,6 +5,8 @@ test.describe('pixel rainy cabin', () => {
     await page.goto('/');
 
     await expect(page.getByRole('heading', { name: '雨夜小屋' })).toBeAttached();
+    await expect(page.getByText('蓝色雨幕外，是一间亮着灯的家。')).toHaveCount(0);
+    await expect(page.getByText('RAIN', { exact: true })).toHaveCount(0);
     await expect(page.getByRole('region', { name: '蓝调雨夜小屋场景' })).toBeVisible();
     await expect(page.getByRole('region', { name: '互动信息' })).toBeVisible();
     await expect(page.getByRole('button', { name: '查看窗户' })).toBeVisible();
