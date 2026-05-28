@@ -18,8 +18,8 @@ test.describe('pixel rainy cabin', () => {
     await expect(page.locator('.food-table')).toBeVisible();
     await expect(page.locator('.table-top')).toBeVisible();
     await expect(page.locator('.plate-ribs')).toBeVisible();
-    await expect(page.getByText('小鱼干', { exact: true })).toBeVisible();
-    await expect(page.getByText('骨头饼干', { exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: '小鱼干' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '骨头饼干' })).toBeVisible();
   });
 
   test('uses blue rainy styling and keeps mobile layout usable', async ({ page }) => {
@@ -69,24 +69,39 @@ test.describe('pixel rainy cabin', () => {
     await expect(page.locator('#panel-copy')).toContainText('家里很暖');
   });
 
-  test('feeding and affection update pet state and visual mode', async ({ page }) => {
+  test('shows pet numbers only after clicking a pet', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByRole('button', { name: '喂小鱼干' }).click();
-    await expect(page.locator('[data-stat="cat-fullness"]')).toHaveText('63');
-    await expect(page.locator('[data-stat="cat-happiness"]')).toHaveText('67');
-    await expect(page.locator('.pet-cat')).toHaveAttribute('data-mood', 'eating');
-    await expect(page.locator('#panel-copy')).toContainText('小鱼干');
+    await expect(page.locator('.pet-status-grid')).toBeHidden();
+    await expect(page.locator('[data-status-card="cat"]')).toBeHidden();
+    await expect(page.locator('[data-status-card="dog"]')).toBeHidden();
 
-    await page.getByRole('button', { name: '拍拍小狗' }).click();
-    await expect(page.locator('[data-stat="dog-happiness"]')).toHaveText('70');
+    await page.getByRole('button', { name: '查看小猫' }).click();
+    await expect(page.locator('[data-status-card="cat"]')).toBeVisible();
+    await expect(page.locator('[data-status-card="dog"]')).toBeHidden();
+    await expect(page.locator('[data-stat="cat-fullness"]')).toHaveText('45');
+
+    await page.getByRole('button', { name: '查看小狗' }).click();
+    await expect(page.locator('[data-status-card="cat"]')).toBeHidden();
+    await expect(page.locator('[data-status-card="dog"]')).toBeVisible();
+    await expect(page.locator('[data-stat="dog-happiness"]')).toHaveText('60');
+  });
+
+  test('dragging treats onto pets triggers happy animation and updates hidden state', async ({ page }) => {
+    await page.goto('/');
+
+    await page.getByRole('button', { name: '小鱼干' }).dragTo(page.getByRole('button', { name: '查看小猫' }));
+    await expect(page.locator('.pet-cat')).toHaveAttribute('data-mood', 'happy');
+    await expect(page.locator('#panel-title')).toHaveText('小猫很开心');
+    await expect(page.locator('.pet-status-grid')).toBeHidden();
+
+    await page.getByRole('button', { name: '查看小猫' }).click();
+    await expect(page.locator('[data-stat="cat-fullness"]')).toHaveText('59');
+    await expect(page.locator('[data-stat="cat-happiness"]')).toHaveText('73');
+
+    await page.getByRole('button', { name: '骨头饼干' }).dragTo(page.getByRole('button', { name: '查看小狗' }));
     await expect(page.locator('.pet-dog')).toHaveAttribute('data-mood', 'happy');
-
-    await page.getByRole('button', { name: '喂骨头饼干' }).click();
-    await page.getByRole('button', { name: '喂骨头饼干' }).click();
-    await page.getByRole('button', { name: '喂骨头饼干' }).click();
-    await page.getByRole('button', { name: '喂骨头饼干' }).click();
-    await expect(page.locator('.pet-dog')).toHaveAttribute('data-mood', 'sleepy');
+    await expect(page.locator('#panel-title')).toHaveText('小狗很开心');
   });
 
   test('supports keyboard focus and captures desktop and mobile screenshots', async ({ page }) => {

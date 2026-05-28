@@ -75,7 +75,8 @@ h1 {
 }
 
 .panel-copy,
-.pet-status p {
+.pet-status p,
+.treat-hint {
   color: var(--muted);
   line-height: 1.6;
 }
@@ -561,6 +562,13 @@ h1 {
   outline-offset: 3px;
 }
 
+.hotspot.is-drop-ready,
+.pet.is-drop-ready {
+  outline: 4px solid var(--warm-300);
+  outline-offset: 4px;
+  filter: brightness(1.2);
+}
+
 .hotspot-window {
   left: 58%;
   top: 43%;
@@ -603,19 +611,42 @@ h1 {
 }
 
 .panel-copy {
-  min-height: 92px;
+  min-height: 108px;
 }
 
 .pet-status,
-.action-row button {
+.treat-chip {
   border: 3px solid #294d70;
   background: #0b1c34;
 }
 
-.pet-status-grid {
+.treat-tray {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: 16px;
+}
+
+.treat-chip {
+  min-height: 54px;
+  color: var(--ink);
+  cursor: grab;
+  box-shadow: inset 0 -5px 0 rgba(7, 18, 38, 0.85);
+}
+
+.treat-chip:active,
+.treat-chip.is-dragging {
+  cursor: grabbing;
+  color: var(--warm-300);
+  border-color: var(--warm-300);
+}
+
+.treat-chip:focus-visible {
+  outline: 3px solid var(--warm-300);
+  outline-offset: 2px;
+}
+
+.pet-status-grid {
   margin-top: 16px;
 }
 
@@ -626,24 +657,6 @@ h1 {
 .pet-status h3 {
   margin-bottom: 8px;
   color: var(--warm-300);
-}
-
-.action-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.action-row button {
-  min-height: 44px;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.action-row button:focus-visible {
-  outline: 3px solid var(--warm-300);
-  outline-offset: 2px;
 }
 
 .pet[data-mood="eating"] {
@@ -854,8 +867,7 @@ h1 {
     min-height: 360px;
   }
 
-  .pet-status-grid,
-  .action-row {
+  .treat-tray {
     grid-template-columns: 1fr;
   }
 

@@ -55,7 +55,7 @@
             <span class="soup-bowl"></span>
           </div>
 
-          <div class="pet pet-cat" data-pet="cat" aria-hidden="true">
+          <div class="pet pet-cat" data-pet="cat" data-drop-pet="cat" aria-hidden="true">
             <span class="cat-tail"></span>
             <span class="cat-body"></span>
             <span class="cat-head"></span>
@@ -63,7 +63,7 @@
             <span class="cat-eye cat-eye-right"></span>
           </div>
 
-          <div class="pet pet-dog" data-pet="dog" aria-hidden="true">
+          <div class="pet pet-dog" data-pet="dog" data-drop-pet="dog" aria-hidden="true">
             <span class="dog-tail"></span>
             <span class="dog-body"></span>
             <span class="dog-head"></span>
@@ -76,8 +76,8 @@
           <button class="hotspot hotspot-window" type="button" data-target="window" aria-label="查看窗户"></button>
           <button class="hotspot hotspot-door" type="button" data-target="door" aria-label="查看门口"></button>
           <button class="hotspot hotspot-food" type="button" data-target="food" aria-label="查看糖醋排骨"></button>
-          <button class="hotspot hotspot-cat" type="button" data-target="cat" aria-label="查看小猫"></button>
-          <button class="hotspot hotspot-dog" type="button" data-target="dog" aria-label="查看小狗"></button>
+          <button class="hotspot hotspot-cat" type="button" data-target="cat" data-drop-pet="cat" aria-label="查看小猫"></button>
+          <button class="hotspot hotspot-dog" type="button" data-target="dog" data-drop-pet="dog" aria-label="查看小狗"></button>
         </section>
       </section>
 
@@ -86,28 +86,26 @@
           <p class="eyebrow">当前发现</p>
           <h2 id="panel-title">暖灯亮着</h2>
         </div>
-        <p id="panel-copy" class="panel-copy" aria-live="polite">雨滴落在屋檐上，窗里透出暖光。点击小屋、食物、小猫或小狗看看细节。</p>
+        <p id="panel-copy" class="panel-copy" aria-live="polite">把食物拖到小猫或小狗身上，或者点击它们查看状态。</p>
 
-        <div class="pet-status-grid" aria-label="宠物状态">
-          <article class="pet-status" data-status-card="cat">
+        <div class="treat-tray" aria-label="可拖拽食物">
+          <button class="treat-chip" type="button" draggable="true" data-treat="fish">小鱼干</button>
+          <button class="treat-chip" type="button" draggable="true" data-treat="bone">骨头饼干</button>
+        </div>
+
+        <div class="pet-status-grid" aria-label="宠物状态" hidden>
+          <article class="pet-status" data-status-card="cat" hidden>
             <h3>小猫</h3>
             <p>饱腹 <span data-stat="cat-fullness">45</span></p>
             <p>开心 <span data-stat="cat-happiness">55</span></p>
             <p>困意 <span data-stat="cat-sleepiness">20</span></p>
           </article>
-          <article class="pet-status" data-status-card="dog">
+          <article class="pet-status" data-status-card="dog" hidden>
             <h3>小狗</h3>
             <p>饱腹 <span data-stat="dog-fullness">50</span></p>
             <p>开心 <span data-stat="dog-happiness">60</span></p>
             <p>困意 <span data-stat="dog-sleepiness">15</span></p>
           </article>
-        </div>
-
-        <div class="action-row" aria-label="宠物互动">
-          <button type="button" data-action="feed-cat">喂小鱼干</button>
-          <button type="button" data-action="pet-cat">摸摸小猫</button>
-          <button type="button" data-action="feed-dog">喂骨头饼干</button>
-          <button type="button" data-action="pet-dog">拍拍小狗</button>
         </div>
       </aside>
     </main>
